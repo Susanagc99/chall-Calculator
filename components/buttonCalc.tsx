@@ -7,6 +7,7 @@ interface Props {
     color?: string;
     size?: string;
     colorText?: string;
+    func?: () => void | undefined,
 }
 
 export const ButtonCalc = ({
@@ -14,9 +15,11 @@ export const ButtonCalc = ({
     color= colors.darkGray,
     size= "md",
     colorText= colors.textPrimary,
+    func
 }:Props) => {
     return (
         <Pressable 
+        onPress={func}
         style={{
             ...styles.button,
             backgroundColor: color,

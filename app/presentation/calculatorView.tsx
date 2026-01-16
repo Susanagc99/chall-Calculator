@@ -1,68 +1,83 @@
 import { ButtonCalc } from "@/components/buttonCalc";
 import { colors } from "@/constants/theme";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { useCalculator } from "@/hooks/useCalculator";
 
 export const CalculatorView = () => {
+
+    const {buildNumber, calculate, handleOperator, result, getOperation, resetValue} = useCalculator()
+
     return (
         <View style={styles.container}>
+
+            <Text adjustsFontSizeToFit numberOfLines={1} style={styles.operation}>{getOperation()}</Text>
+            <Text adjustsFontSizeToFit numberOfLines={1} style={styles.value}>{result === "0" ? "": result}</Text>
             
             <View style={styles.row}>
                 <ButtonCalc 
+                func={() => resetValue()}
                 text="C" 
                 color={colors.lightGray}
                 colorText={colors.background} 
                 />
-                <ButtonCalc 
+                <ButtonCalc
+                func={() => buildNumber("+/-")} 
                 text="+/-"
                 color={colors.lightGray}
                 colorText={colors.background} 
                 />
                 <ButtonCalc 
+                func={() => buildNumber("%")}
                 text="%"
                 color={colors.lightGray}
                 colorText={colors.background} 
                 />
-                <ButtonCalc 
+                <ButtonCalc
+                func={() => handleOperator("/")} 
                 text="/" 
                 color={colors.orange}
                 />
             </View>
 
             <View style={styles.row}>
-                <ButtonCalc text="7" />
-                <ButtonCalc text="8" />
-                <ButtonCalc text="9" />
-                <ButtonCalc 
+                <ButtonCalc func={() => buildNumber("7")} text="7" />
+                <ButtonCalc func={() => buildNumber("8")} text="8" />
+                <ButtonCalc func={() => buildNumber("9")} text="9" />
+                <ButtonCalc
+                func={() => handleOperator("*")} 
                 text="*" 
                 color={colors.orange} 
                 />
             </View>
 
             <View style={styles.row}>
-                <ButtonCalc text="4" />
-                <ButtonCalc text="5" />
-                <ButtonCalc text="6" />
-                <ButtonCalc 
+                <ButtonCalc func={() => buildNumber("4")} text="4" />
+                <ButtonCalc func={() => buildNumber("5")} text="5" />
+                <ButtonCalc func={() => buildNumber("6")} text="6" />
+                <ButtonCalc
+                func={() => handleOperator("-")} 
                 text="-" 
                 color={colors.orange} 
                 />
             </View>
 
             <View style={styles.row}>
-                <ButtonCalc text="1" />
-                <ButtonCalc text="2" />
-                <ButtonCalc text="3" />
+                <ButtonCalc func={() => buildNumber("1")} text="1" />
+                <ButtonCalc func={() => buildNumber("2")} text="2" />
+                <ButtonCalc func={() => buildNumber("3")} text="3" />
                 <ButtonCalc 
+                func={() => handleOperator("+")}
                 text="+" 
                 color={colors.orange} 
                 />
             </View>
 
             <View style={styles.row}>
-                <ButtonCalc text="0" size="lg" />
-                <ButtonCalc text="." />
-                <ButtonCalc 
+                <ButtonCalc func={() => buildNumber("0")} text="0" size="lg" />
+                <ButtonCalc func={() => buildNumber(".")} text="." />
+                <ButtonCalc
+                func={() => calculate()} 
                 text="=" 
                 color={colors.orange} 
                 />
@@ -81,9 +96,22 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
         gap: 12,
         marginTop: 12,
     },
+    value: {
+        fontSize: 80,
+        color: colors.textPrimary,
+        alignSelf: "flex-end",
+        marginRight: 30,
+
+    },
+    operation: {
+        fontSize: 40,
+        color: colors.textPrimary,
+        opacity: 0.5,
+        alignSelf: "flex-end",
+        marginRight: 30,
+    }
+
 });
