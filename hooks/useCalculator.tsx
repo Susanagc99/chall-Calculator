@@ -42,8 +42,14 @@ export const useCalculator = () => {
     }
 
 
-    //calcular el resultado
+    //calcular el resultado y/o dirigir a la vista secreta
+    const SECRET_CODE = "8304";
+
     const calculate = () => {
+        if (value1 === SECRET_CODE){
+            return "SECRET";
+        }
+
         if (operator === "0" || value2 === "0") return;
     
         let resultado = 0;

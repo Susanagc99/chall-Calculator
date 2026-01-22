@@ -1,14 +1,7 @@
-import 'react-native-reanimated';
+import "react-native-reanimated";
 
-import { CalculatorView } from './presentation/calculatorView';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
-
-  return (
-      <CalculatorView/>
-  );
+  return <Stack screenOptions={{ headerShown: false }}/>;
 }

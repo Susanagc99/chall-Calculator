@@ -1,42 +1,60 @@
 import { ButtonCalc } from "@/components/buttonCalc";
 import { colors } from "@/constants/theme";
+import { useCalculator } from "@/hooks/useCalculator";
+import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { useCalculator } from "@/hooks/useCalculator";
 
-export const CalculatorView = () => {
+const CalculatorView = () => {
+    const {
+        buildNumber,
+        calculate,
+        handleOperator,
+        result,
+        getOperation,
+        resetValue,
+    } = useCalculator();
 
-    const {buildNumber, calculate, handleOperator, result, getOperation, resetValue} = useCalculator()
+    const onEqualPrees = () => {
+        const action = calculate();
+
+        if (action === "SECRET") {
+            router.replace("/secret");
+        }
+    };
 
     return (
         <View style={styles.container}>
+            <Text adjustsFontSizeToFit numberOfLines={1} style={styles.operation}>
+                {getOperation()}
+            </Text>
+            <Text adjustsFontSizeToFit numberOfLines={1} style={styles.value}>
+                {result === "0" ? "" : result}
+            </Text>
 
-            <Text adjustsFontSizeToFit numberOfLines={1} style={styles.operation}>{getOperation()}</Text>
-            <Text adjustsFontSizeToFit numberOfLines={1} style={styles.value}>{result === "0" ? "": result}</Text>
-            
             <View style={styles.row}>
-                <ButtonCalc 
-                func={() => resetValue()}
-                text="C" 
-                color={colors.lightGray}
-                colorText={colors.background} 
+                <ButtonCalc
+                    func={() => resetValue()}
+                    text="C"
+                    color={colors.lightGray}
+                    colorText={colors.background}
                 />
                 <ButtonCalc
-                func={() => buildNumber("+/-")} 
-                text="+/-"
-                color={colors.lightGray}
-                colorText={colors.background} 
-                />
-                <ButtonCalc 
-                func={() => buildNumber("%")}
-                text="%"
-                color={colors.lightGray}
-                colorText={colors.background} 
+                    func={() => buildNumber("+/-")}
+                    text="+/-"
+                    color={colors.lightGray}
+                    colorText={colors.background}
                 />
                 <ButtonCalc
-                func={() => handleOperator("/")} 
-                text="/" 
-                color={colors.orange}
+                    func={() => buildNumber("%")}
+                    text="%"
+                    color={colors.lightGray}
+                    colorText={colors.background}
+                />
+                <ButtonCalc
+                    func={() => handleOperator("/")}
+                    text="/"
+                    color={colors.orange}
                 />
             </View>
 
@@ -45,9 +63,9 @@ export const CalculatorView = () => {
                 <ButtonCalc func={() => buildNumber("8")} text="8" />
                 <ButtonCalc func={() => buildNumber("9")} text="9" />
                 <ButtonCalc
-                func={() => handleOperator("*")} 
-                text="*" 
-                color={colors.orange} 
+                    func={() => handleOperator("*")}
+                    text="*"
+                    color={colors.orange}
                 />
             </View>
 
@@ -56,9 +74,9 @@ export const CalculatorView = () => {
                 <ButtonCalc func={() => buildNumber("5")} text="5" />
                 <ButtonCalc func={() => buildNumber("6")} text="6" />
                 <ButtonCalc
-                func={() => handleOperator("-")} 
-                text="-" 
-                color={colors.orange} 
+                    func={() => handleOperator("-")}
+                    text="-"
+                    color={colors.orange}
                 />
             </View>
 
@@ -66,10 +84,10 @@ export const CalculatorView = () => {
                 <ButtonCalc func={() => buildNumber("1")} text="1" />
                 <ButtonCalc func={() => buildNumber("2")} text="2" />
                 <ButtonCalc func={() => buildNumber("3")} text="3" />
-                <ButtonCalc 
-                func={() => handleOperator("+")}
-                text="+" 
-                color={colors.orange} 
+                <ButtonCalc
+                    func={() => handleOperator("+")}
+                    text="+"
+                    color={colors.orange}
                 />
             </View>
 
@@ -77,9 +95,9 @@ export const CalculatorView = () => {
                 <ButtonCalc func={() => buildNumber("0")} text="0" size="lg" />
                 <ButtonCalc func={() => buildNumber(".")} text="." />
                 <ButtonCalc
-                func={() => calculate()} 
-                text="=" 
-                color={colors.orange} 
+                    func={() => onEqualPrees()}
+                    text="="
+                    color={colors.orange}
                 />
             </View>
         </View>
@@ -90,7 +108,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "flex-end",
-        backgroundColor: "#000000",
+        backgroundColor: colors.background,
         alignItems: "center",
         paddingBottom: 40,
     },
@@ -104,14 +122,13 @@ const styles = StyleSheet.create({
         color: colors.textPrimary,
         alignSelf: "flex-end",
         marginRight: 30,
-
     },
     operation: {
         fontSize: 40,
-        color: colors.textPrimary,
-        opacity: 0.5,
+        color: colors.textSecondary,
         alignSelf: "flex-end",
         marginRight: 30,
-    }
-
+    },
 });
+
+export default CalculatorView;
